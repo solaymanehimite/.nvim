@@ -1,7 +1,6 @@
-## Neovim config files
-
-### features
-- fast startup time (lazy.nvim)
-- file fuzzy finder (telescope)
-- lsp completion (nvim-cmp, mason)
+# Neovim config files
+###  - *Features*
+- Fast startup time **(lazy.nvim)**
+- File fuzzy finder **(telescope)**
+- Lsp completion **(nvim-cmp, mason)**
 - VS code theme

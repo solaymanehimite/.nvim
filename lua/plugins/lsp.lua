@@ -16,11 +16,12 @@ return {
     },
     config = function()
         local lspconfig_defaults = require("lspconfig").util.default_config
-        lspconfig_defaults.capabilities = vim.tbl_deep_extend(
+        local capabilities = vim.tbl_deep_extend(
             "force",
             lspconfig_defaults.capabilities,
             require("cmp_nvim_lsp").default_capabilities()
         )
+        lspconfig_defaults.capabilities = capabilities
 
         -- sources
         local cmp = require("cmp")
@@ -35,9 +36,11 @@ return {
                 { name = "luasnip" },
             },
             mapping = cmp.mapping.preset.insert({
-                ["<Tab>"] = cmp.mapping.confirm({ select = true }),
+                ["<CR>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
+                ["<Tab>"] = cmp.mapping.select_next_item(),
+                ["<S-Tab>"] = cmp.mapping.select_prev_item(),
                 -- Jump to the next snippet placeholder
                 ["<C-f>"] = cmp.mapping(function(fallback)
                     local luasnip = require("luasnip")
@@ -105,6 +108,9 @@ return {
                 vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
                 vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
                 vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
+                vim.keymap.set("n", "<leader>gd", function()
+                    vim.diagnostic.open_float()
+                end, opts)
                 vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
                 vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
                 vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
@@ -133,17 +139,20 @@ return {
                 function(server_name)
                     require("lspconfig")[server_name].setup({})
                 end,
-            },
-        })
 
-        -- fix Undefined global: 'vim'
-        require("lspconfig").lua_ls.setup({
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        globals = { "vim" },
-                    },
-                },
+                ["lua_ls"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.lua_ls.setup({
+                        capabilities = capabilities,
+                        settings = {
+                            Lua = {
+                                diagnostics = {
+                                    globals = { "vim", "it", "describe", "before_each", "after_each" },
+                                },
+                            },
+                        },
+                    })
+                end,
             },
         })
 

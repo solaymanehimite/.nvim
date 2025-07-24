@@ -36,11 +36,11 @@ return {
                 { name = "luasnip" },
             },
             mapping = cmp.mapping.preset.insert({
-                ["<CR>"] = cmp.mapping.confirm({ select = true }),
+                ["<S-Tab>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
-                ["<Tab>"] = cmp.mapping.select_next_item(),
-                ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+                ["<CR>"] = cmp.mapping.select_next_item(),
+                ["<S-CR>"] = cmp.mapping.select_prev_item(),
                 -- Jump to the next snippet placeholder
                 ["<C-f>"] = cmp.mapping(function(fallback)
                     local luasnip = require("luasnip")

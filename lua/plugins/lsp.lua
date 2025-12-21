@@ -108,7 +108,7 @@ return {
                 vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
                 vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
                 vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
-                vim.keymap.set("n", "<leader>gd", function()
+                vim.keymap.set("n", "<leader>K", function()
                     vim.diagnostic.open_float()
                 end, opts)
                 vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
@@ -137,22 +137,27 @@ return {
             ensure_installed = { "lua_ls", "pylsp" },
             handlers = {
                 function(server_name)
-                    require("lspconfig")[server_name].setup({})
+                    vim.lsp.config(server_name, {})
                 end,
+            },
+        })
 
-                ["lua_ls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup({
-                        capabilities = capabilities,
-                        settings = {
-                            Lua = {
-                                diagnostics = {
-                                    globals = { "vim", "it", "describe", "before_each", "after_each" },
-                                },
-                            },
-                        },
-                    })
-                end,
+        vim.lsp.config("lua_ls", {
+            capabilities = capabilities,
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { "vim", "it", "describe", "before_each", "after_each" },
+                    },
+                    workspace = {
+                        -- Add the Neovim runtime files to the workspace library
+                        library = vim.api.nvim_get_runtime_file("", true),
+                    },
+                    -- Enable this for general vim options completion
+                    completion = {
+                        callSnippet = "Replace",
+                    },
+                },
             },
         })
 

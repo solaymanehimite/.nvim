@@ -3,6 +3,7 @@ return {
     name = "kanagawa",
     priority = 1000,
     config = function()
-        -- set colorscheme if needed
+        -- require("kanagawa").setup({ transparent = true })
+        -- vim.cmd("colorscheme kanagawa")
     end
 }

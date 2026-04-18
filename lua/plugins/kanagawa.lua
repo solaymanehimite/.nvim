@@ -1,9 +1,11 @@
 return {
-    "rebelot/kanagawa.nvim",
-    name = "kanagawa",
-    priority = 1000,
-    config = function()
-        -- require("kanagawa").setup({ transparent = true })
-        -- vim.cmd("colorscheme kanagawa")
-    end
+	"rebelot/kanagawa.nvim",
+	name = "kanagawa",
+	priority = 1000,
+	config = function()
+		require("kanagawa").setup({ transparent = true })
+		vim.cmd("colorscheme kanagawa-dragon")
+		vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+		vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+	end,
 }
